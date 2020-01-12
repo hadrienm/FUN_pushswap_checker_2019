@@ -4,6 +4,12 @@ import System.Environment
 import System.Exit
 import Data.List
 
+splitOn :: (a -> Bool) -> [a] -> [[a]] -- Sépare un String en fonction d'un caractére séparateurs
+splitOn _ [] = []
+splitOn f l@(x:xs)
+    | f x = splitOn f xs
+    | otherwise = let (h,t) = break f l in h:(splitOn f t)
+
 isStringDigit :: [Char] -> Bool --verifie si la chaine de caractéres est uniquement composé de nombre
 isStringDigit [] = True
 isStringDigit (x:xs)
@@ -62,8 +68,16 @@ verifieList x
 main :: IO () --début du programme
 main = do
     args <- getArgs
-    if checkSndPart args == False then
-        exitWith (ExitFailure 84)
+    if args!!0 == "-f" then do
+        args <- readFile (args!!1)
+        print "Ouverture du fichier"
+        if checkSndPart (splitOn (==' ') (args)) == False then
+            exitWith (ExitFailure 84)
+        else
+            print (intercalate " " (sortList (splitOn (==' ') (args)) [] []))
     else do
-        let operation_list = sortList args [] []
-        print (intercalate " " operation_list)  
+        print "Traitement de la liste de nombre"
+        if checkSndPart args == False then
+            exitWith (ExitFailure 84)
+        else
+            print (intercalate " " (sortList args [] []))

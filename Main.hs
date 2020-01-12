@@ -25,7 +25,7 @@ checkSndPart (x:xs)
 checkArray :: [String] -> Bool --Regarde s'il n'y a que des fonctions autorisé dans le tableau
 checkArray [] = True
 checkArray (x:xs) = 
-    if x /= "sa" && x /= "sb" && x /= "sc" && x /= "pa" && x /= "pb" && x /= "ra" && x /= "rb" && x /= "rr" && x /= "rra" && x /= "rrb"  && x /= "rrr"then
+    if x /= "sa" && x /= "sb" && x /= "sc" && x /= "pa" && x /= "pb" && x /= "ra" && x /= "rb" && x /= "rr" && x /= "rra" && x /= "rrb"  && x /= "rrr" then
         False
     else
         checkArray xs
@@ -74,8 +74,9 @@ sortList l a b
     | otherwise = sortList (drop 1 l) (sndRotateFunction a) (sndRotateFunction b) --rrr
 
 verifieList :: [String] -> IO () --Verifier que la liste est bien triée dans l'odre croissant
+verifieList [] = putStr "OK"
 verifieList a
-    | a!!0 == "failed" = putStr "K0"
+    | a!!0 == "failed" = putStr "KO"
 verifieList (x:[]) = putStr "OK"
 verifieList (x:xs)
     | (read x :: Int) > (read (head xs) :: Int) = putStr "KO"
